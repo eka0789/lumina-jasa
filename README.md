@@ -7,9 +7,12 @@ This repository contains the working **Next.js 15 foundation** and engineering b
 - Responsive public landing, smart-search preview, provider onboarding and sign-in surfaces.
 - Semantic three-layer design tokens, light/dark themes and accessible navigation/forms.
 - Supabase browser/server clients, session-refresh middleware and OAuth callback.
+- TOTP enrollment/challenge flow with AAL2 enforcement for sensitive route groups.
 - Environment validation and `/api/health` readiness endpoint.
+- Correlation IDs, redacting structured logs and an application instrumentation hook.
 - Strict TypeScript, ESLint, Vitest and successful Next.js production build.
 - Versioned PostgreSQL schema and baseline RLS migrations under `supabase/migrations`.
+- GitHub Actions gates for clean builds, migration rebuilds and cross-tenant pgTAP tests.
 
 ## Run locally
 
@@ -43,6 +46,7 @@ npm run build
 | [UX_DESIGN_SYSTEM.md](UX_DESIGN_SYSTEM.md) / [STATE_MANAGEMENT.md](STATE_MANAGEMENT.md) | UX, tokens, components and frontend state |
 | [TESTING.md](TESTING.md) / [ROADMAP.md](ROADMAP.md) | Quality strategy and phased delivery |
 | [OPERATIONS.md](OPERATIONS.md) | CI/CD, deployment, observability, scaling and recovery |
+| [PHASE_1_ACCEPTANCE.md](PHASE_1_ACCEPTANCE.md) | Phase 1 evidence map and remaining operational sign-off |
 
 ## Binding architecture decisions
 
