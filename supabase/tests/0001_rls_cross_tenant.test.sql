@@ -1,7 +1,7 @@
 begin;
 
 create extension if not exists pgtap with schema extensions;
-select plan(7);
+select plan(8);
 
 select ok(
   (select bool_and(c.relrowsecurity)
