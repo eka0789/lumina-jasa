@@ -18,6 +18,7 @@ This repository contains the working **Next.js 15 foundation** and engineering b
 - Audited disputes/evidence, dual-control sandbox refunds, verified reviews, business approvals, and privacy request workflows.
 - Editable smart-intake fallback, interpretable provider ranking, moderated realtime chat, opt-in arrival tracking, and human moderation queue.
 - Nonce CSP/readiness hardening, audited launch kill switches, operational signals, bounded release probes, and restore verification.
+- Initial scale foundation for bounded emergency dispatch, human-reviewed fraud signals, multichannel notification routing, forecast baselines, and ranking model registry.
 
 ## Run locally
 
@@ -57,6 +58,7 @@ npm run build
 | [PHASE_4_ACCEPTANCE.md](PHASE_4_ACCEPTANCE.md) | Trust/business controls and remaining financial, security and UAT evidence |
 | [PHASE_5_ACCEPTANCE.md](PHASE_5_ACCEPTANCE.md) | AI/realtime guardrails, degraded-mode evidence and remaining canary sign-off |
 | [PHASE_6_ACCEPTANCE.md](PHASE_6_ACCEPTANCE.md) | Launch hardening evidence, go-live gates and external approval checklist |
+| [PHASE_7_SCALE_FOUNDATION.md](PHASE_7_SCALE_FOUNDATION.md) | Ongoing scale tranche and quarterly outcome/economic gates |
 
 ## Binding architecture decisions
 
