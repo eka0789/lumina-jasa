@@ -15,6 +15,7 @@ This repository contains the working **Next.js 15 foundation** and engineering b
 - GitHub Actions gates for clean builds, migration rebuilds and cross-tenant pgTAP tests.
 - Transactional provider onboarding, AAL2-protected KYC/KYB review queue, verified public catalog and provider profiles.
 - Manual request-to-quote flow, conflict-safe scheduled booking, fail-closed sandbox payment, balanced ledger, invoice, timeline and participant chat.
+- Audited disputes/evidence, dual-control sandbox refunds, verified reviews, business approvals, and privacy request workflows.
 
 ## Run locally
 
@@ -51,6 +52,7 @@ npm run build
 | [PHASE_1_ACCEPTANCE.md](PHASE_1_ACCEPTANCE.md) | Phase 1 evidence map and remaining operational sign-off |
 | [PHASE_2_ACCEPTANCE.md](PHASE_2_ACCEPTANCE.md) | Supply/catalog evidence map and pilot cohort exit gate |
 | [PHASE_3_ACCEPTANCE.md](PHASE_3_ACCEPTANCE.md) | Transaction pilot controls and remaining staging evidence |
+| [PHASE_4_ACCEPTANCE.md](PHASE_4_ACCEPTANCE.md) | Trust/business controls and remaining financial, security and UAT evidence |
 
 ## Binding architecture decisions
 

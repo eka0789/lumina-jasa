@@ -12,6 +12,8 @@ const links = [
   { href: "/pesan", label: "Buat permintaan" },
   { href: "/pesanan", label: "Pesanan saya" },
   { href: "/mitra/permintaan", label: "Ruang mitra" },
+  { href: "/bisnis", label: "Bisnis" },
+  { href: "/akun/privasi", label: "Privasi" },
   { href: "/mitra", label: "Jadi mitra" },
 ]
 
