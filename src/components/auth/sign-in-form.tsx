@@ -15,7 +15,7 @@ const schema = z.object({
 })
 type Values = z.infer<typeof schema>
 
-export function SignInForm() {
+export function SignInForm({ nextPath = "/" }: { nextPath?: string }) {
   const [serverError, setServerError] = useState<string | null>(null)
   const form = useForm<Values>({ resolver: zodResolver(schema), defaultValues: { email: "", password: "" } })
 
@@ -31,14 +31,14 @@ export function SignInForm() {
       setServerError("Email atau kata sandi tidak cocok.")
       return
     }
-    window.location.assign("/")
+    window.location.assign(nextPath.startsWith("/") && !nextPath.startsWith("//") ? nextPath : "/")
   }
 
   async function signInWithGoogle() {
     setServerError(null)
     const supabase = createClient()
     if (!supabase) return setServerError("Supabase belum dikonfigurasi pada environment ini.")
-    const redirectTo = `${window.location.origin}/auth/callback`
+    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`
     const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo } })
     if (error) setServerError("Login Google belum dapat dimulai.")
   }

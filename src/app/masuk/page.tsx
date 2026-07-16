@@ -7,7 +7,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export const metadata: Metadata = { title: "Masuk" }
 
-export default function SignInPage() {
+export default async function SignInPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
+  const requestedNext = (await searchParams).next
+  const nextPath = requestedNext?.startsWith("/") && !requestedNext.startsWith("//") ? requestedNext : "/"
   return (
     <main id="konten-utama" className="grid min-h-screen lg:grid-cols-[1fr_.9fr]">
       <section className="hidden bg-[hsl(var(--teal-900))] p-12 text-white lg:flex lg:flex-col lg:justify-between">
@@ -28,7 +30,7 @@ export default function SignInPage() {
           <div className="mb-8 flex items-center justify-between lg:hidden"><Logo /><Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground"><ArrowLeft className="size-4" /> Kembali</Link></div>
           <Card className="shadow-float">
             <CardHeader><CardTitle className="text-2xl">Selamat datang kembali</CardTitle><CardDescription>Masuk untuk melanjutkan aktivitas Lumina Jasa.</CardDescription></CardHeader>
-            <CardContent><SignInForm /><p className="mt-6 text-center text-sm text-muted-foreground">Belum punya akun? <Link href="/mitra" className="font-semibold text-primary hover:underline">Mulai di sini</Link></p></CardContent>
+            <CardContent><SignInForm nextPath={nextPath} /><p className="mt-6 text-center text-sm text-muted-foreground">Belum punya akun? <Link href="/mitra" className="font-semibold text-primary hover:underline">Mulai di sini</Link></p></CardContent>
           </Card>
           <p className="mt-6 text-center text-xs leading-5 text-muted-foreground">Dengan melanjutkan, Anda menyetujui Ketentuan Layanan dan Kebijakan Privasi Lumina Jasa.</p>
         </div>

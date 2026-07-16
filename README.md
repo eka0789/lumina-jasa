@@ -13,6 +13,7 @@ This repository contains the working **Next.js 15 foundation** and engineering b
 - Strict TypeScript, ESLint, Vitest and successful Next.js production build.
 - Versioned PostgreSQL schema and baseline RLS migrations under `supabase/migrations`.
 - GitHub Actions gates for clean builds, migration rebuilds and cross-tenant pgTAP tests.
+- Transactional provider onboarding, AAL2-protected KYC/KYB review queue, verified public catalog and provider profiles.
 
 ## Run locally
 
@@ -47,6 +48,7 @@ npm run build
 | [TESTING.md](TESTING.md) / [ROADMAP.md](ROADMAP.md) | Quality strategy and phased delivery |
 | [OPERATIONS.md](OPERATIONS.md) | CI/CD, deployment, observability, scaling and recovery |
 | [PHASE_1_ACCEPTANCE.md](PHASE_1_ACCEPTANCE.md) | Phase 1 evidence map and remaining operational sign-off |
+| [PHASE_2_ACCEPTANCE.md](PHASE_2_ACCEPTANCE.md) | Supply/catalog evidence map and pilot cohort exit gate |
 
 ## Binding architecture decisions
 
