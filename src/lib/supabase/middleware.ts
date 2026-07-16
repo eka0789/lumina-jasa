@@ -1,16 +1,22 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 import { hasAal2, requiresAal2 } from "@/lib/auth/aal"
+import { buildContentSecurityPolicy } from "@/lib/security/headers"
 
 export async function updateSession(request: NextRequest) {
   const requestId = request.headers.get("x-request-id") ?? crypto.randomUUID()
+  const nonce = crypto.randomUUID()
+  const csp = buildContentSecurityPolicy(nonce, process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NODE_ENV === "production")
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set("x-request-id", requestId)
+  requestHeaders.set("x-nonce", nonce)
+  requestHeaders.set("Content-Security-Policy", csp)
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
   if (!url || !key) {
     const unconfiguredResponse = NextResponse.next({ request: { headers: requestHeaders } })
     unconfiguredResponse.headers.set("x-request-id", requestId)
+    unconfiguredResponse.headers.set("Content-Security-Policy", csp)
     return unconfiguredResponse
   }
 
@@ -37,9 +43,11 @@ export async function updateSession(request: NextRequest) {
       const redirect = NextResponse.redirect(mfaUrl)
       response.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie))
       redirect.headers.set("x-request-id", requestId)
+      redirect.headers.set("Content-Security-Policy", csp)
       return redirect
     }
   }
   response.headers.set("x-request-id", requestId)
+  response.headers.set("Content-Security-Policy", csp)
   return response
 }

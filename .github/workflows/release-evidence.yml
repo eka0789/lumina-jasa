@@ -1,0 +1,40 @@
+name: Release evidence
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: Staging URL to probe
+        required: true
+        type: string
+      load_requests:
+        description: Number of bounded smoke requests
+        required: true
+        default: "100"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Verify security headers
+        run: npm run release:headers
+        env:
+          TARGET_URL: ${{ inputs.target_url }}
+      - name: Run bounded load smoke
+        run: npm run release:load
+        env:
+          TARGET_URL: ${{ inputs.target_url }}/api/health?probe=readiness
+          LOAD_REQUESTS: ${{ inputs.load_requests }}
+          LOAD_CONCURRENCY: "20"
+          LOAD_P95_MS: "1000"

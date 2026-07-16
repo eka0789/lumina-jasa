@@ -16,6 +16,8 @@
     "db:start": "supabase start",
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
+    "release:headers": "node scripts/check-security-headers.mjs",
+    "release:load": "node scripts/load-smoke.mjs",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
