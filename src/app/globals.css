@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primitive palette */
+    --teal-50: 166 76% 97%;
+    --teal-100: 167 85% 89%;
+    --teal-600: 173 80% 27%;
+    --teal-700: 175 84% 22%;
+    --teal-900: 176 61% 13%;
+    --slate-50: 210 40% 98%;
+    --slate-100: 210 40% 96%;
+    --slate-200: 214 32% 91%;
+    --slate-600: 215 16% 40%;
+    --slate-950: 222 47% 11%;
+
+    /* Semantic layer */
+    --background: 45 33% 98%;
+    --foreground: var(--slate-950);
+    --card: 0 0% 100%;
+    --card-foreground: var(--slate-950);
+    --primary: var(--teal-600);
+    --primary-foreground: 0 0% 100%;
+    --secondary: var(--teal-50);
+    --secondary-foreground: var(--teal-900);
+    --muted: var(--slate-100);
+    --muted-foreground: var(--slate-600);
+    --accent: var(--teal-50);
+    --accent-foreground: var(--teal-900);
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 72% 29%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 45%;
+    --warning-foreground: 26 83% 14%;
+    --border: 214 24% 88%;
+    --input: 214 24% 82%;
+    --ring: var(--teal-600);
+    --radius: 0.875rem;
+  }
+
+  .dark {
+    --background: 176 34% 7%;
+    --foreground: 166 30% 96%;
+    --card: 176 27% 10%;
+    --card-foreground: 166 30% 96%;
+    --primary: 168 64% 48%;
+    --primary-foreground: 176 61% 9%;
+    --secondary: 175 30% 15%;
+    --secondary-foreground: 166 30% 95%;
+    --muted: 175 20% 15%;
+    --muted-foreground: 174 12% 68%;
+    --accent: 175 30% 15%;
+    --accent-foreground: 166 30% 95%;
+    --destructive: 0 63% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 60% 43%;
+    --success-foreground: 176 61% 7%;
+    --warning: 38 92% 55%;
+    --warning-foreground: 26 83% 12%;
+    --border: 174 18% 20%;
+    --input: 174 18% 26%;
+    --ring: 168 64% 48%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Plus Jakarta Sans", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.18);
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .bg-grid {
+    background-image:
+      linear-gradient(hsl(var(--primary) / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--primary) / 0.05) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+  .mask-fade {
+    mask-image: linear-gradient(to bottom, black 62%, transparent 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
