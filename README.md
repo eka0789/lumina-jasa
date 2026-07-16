@@ -46,6 +46,7 @@ npm run build
 | [PRD.md](PRD.md) / [REQUIREMENTS.md](REQUIREMENTS.md) | Product scope and traceable requirements |
 | [ARCHITECTURE.md](ARCHITECTURE.md) / [FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md) | Runtime design and repository structure |
 | [DATABASE.md](DATABASE.md) / [supabase/migrations/0001_initial_schema.sql](supabase/migrations/0001_initial_schema.sql) | Data model and executable schema/RLS migrations |
+| [supabase/sql-editor/README.md](supabase/sql-editor/README.md) | Fresh-project SQL Editor bundle, connected demo seed and verification queries |
 | [API.md](API.md) | REST conventions, endpoints, payloads and webhooks |
 | [AUTH_SECURITY.md](AUTH_SECURITY.md) | Auth, RBAC/ABAC, security and privacy |
 | [AI_SYSTEM.md](AI_SYSTEM.md) | AI modules, contracts, evaluation and governance |

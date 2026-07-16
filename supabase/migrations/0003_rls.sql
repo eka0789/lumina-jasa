@@ -38,6 +38,15 @@ returns boolean language sql stable security definer set search_path = '' as $$
   );
 $$;
 
+create or replace function private.is_conversation_participant(target_conversation_id uuid)
+returns boolean language sql stable security definer set search_path = '' as $$
+  select exists (
+    select 1 from public.conversation_participants p
+    where p.conversation_id = target_conversation_id
+      and p.user_id = (select auth.uid()) and p.left_at is null
+  );
+$$;
+
 create or replace function private.can_access_file(target_file_id uuid)
 returns boolean language sql stable security definer set search_path = '' as $$
   select exists (
@@ -64,18 +73,24 @@ revoke all on function private.has_platform_role(text) from public;
 revoke all on function private.is_business_member(uuid,text[]) from public;
 revoke all on function private.is_provider_member(uuid,text[]) from public;
 revoke all on function private.is_booking_participant(uuid) from public;
+revoke all on function private.is_conversation_participant(uuid) from public;
 revoke all on function private.can_access_file(uuid) from public;
 grant execute on function private.has_platform_role(text), private.is_business_member(uuid,text[]),
-  private.is_provider_member(uuid,text[]), private.is_booking_participant(uuid), private.can_access_file(uuid) to authenticated;
+  private.is_provider_member(uuid,text[]), private.is_booking_participant(uuid), private.is_conversation_participant(uuid),
+  private.can_access_file(uuid) to authenticated;
 
 do $$
 declare t record;
 begin
-  for t in select tablename from pg_tables where schemaname = 'public'
-  loop execute format('alter table public.%I enable row level security', t.tablename); end loop;
+  for t in
+    select tablename from pg_tables
+    where schemaname = 'public' and tableowner = current_user
+  loop
+    execute format('alter table public.%I enable row level security', t.tablename);
+    execute format('revoke all on table public.%I from anon, authenticated', t.tablename);
+  end loop;
 end $$;
 
-revoke all on all tables in schema public from anon, authenticated;
 grant select on public.categories, public.services, public.providers, public.provider_services, public.provider_portfolios, public.reviews to anon, authenticated;
 grant select, update on public.profiles to authenticated;
 grant select on public.user_roles to authenticated;
@@ -136,18 +151,16 @@ create policy status_events_participant_read on public.job_status_events for sel
 create policy tracking_participant_read on public.tracking_points for select to authenticated using (private.is_booking_participant(booking_id));
 
 create policy conversations_participant_read on public.conversations for select to authenticated using (
-  exists (select 1 from public.conversation_participants p where p.conversation_id = conversations.id and p.user_id = (select auth.uid()) and p.left_at is null)
+  private.is_conversation_participant(id)
 );
 create policy participants_participant_read on public.conversation_participants for select to authenticated using (
-  exists (select 1 from public.conversation_participants p where p.conversation_id = conversation_participants.conversation_id and p.user_id = (select auth.uid()) and p.left_at is null)
+  private.is_conversation_participant(conversation_id)
 );
 create policy messages_participant_read on public.messages for select to authenticated using (
-  exists (select 1 from public.conversation_participants p where p.conversation_id = messages.conversation_id and p.user_id = (select auth.uid()) and p.left_at is null)
+  private.is_conversation_participant(conversation_id)
 );
 create policy messages_participant_insert on public.messages for insert to authenticated with check (
-  sender_user_id = (select auth.uid()) and exists (
-    select 1 from public.conversation_participants p where p.conversation_id = messages.conversation_id and p.user_id = (select auth.uid()) and p.left_at is null
-  )
+  sender_user_id = (select auth.uid()) and private.is_conversation_participant(conversation_id)
 );
 create policy receipts_own on public.message_receipts for all to authenticated using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
 create policy attachments_participant_read on public.message_attachments for select to authenticated using (

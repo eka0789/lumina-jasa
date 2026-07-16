@@ -99,7 +99,7 @@ begin
 
   if exists (select 1 from public.job_matches where job_id = new_job_id) then update public.jobs set status = 'matched' where id = new_job_id; end if;
   insert into public.idempotency_keys(principal_id, scope, key, request_hash, response_status, resource_id, expires_at)
-  values (actor_id, 'job.create', p_idempotency_key, encode(digest(concat_ws('|',p_service_id,p_title,p_requested_start)::text,'sha256'),'hex'), 201, new_job_id, now() + interval '24 hours');
+  values (actor_id, 'job.create', p_idempotency_key, pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(concat_ws('|',p_service_id,p_title,p_requested_start)::text,'UTF8')),'hex'), 201, new_job_id, now() + interval '24 hours');
   insert into public.outbox_events(aggregate_type, aggregate_id, event_type, payload, correlation_id)
   values ('job', new_job_id, 'job.requested', jsonb_build_object('job_id',new_job_id), p_idempotency_key);
   return new_job_id;
@@ -162,7 +162,7 @@ begin
   select owner_user_id into provider_owner from public.providers where id=q.provider_id;
   insert into public.conversation_participants(conversation_id,user_id,participant_role) values(new_conversation,actor_id,'customer'),(new_conversation,provider_owner,'provider');
   insert into public.idempotency_keys(principal_id,scope,key,request_hash,response_status,resource_id,expires_at)
-  values(actor_id,'booking.create',p_idempotency_key,encode(digest(concat_ws('|',p_quote_id,p_scheduled_start)::text,'sha256'),'hex'),201,new_booking_id,now()+interval '24 hours');
+  values(actor_id,'booking.create',p_idempotency_key,pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(concat_ws('|',p_quote_id,p_scheduled_start)::text,'UTF8')),'hex'),201,new_booking_id,now()+interval '24 hours');
   return new_booking_id;
 exception when exclusion_violation then raise exception 'provider schedule conflict' using errcode='23P01';
 end;
@@ -218,7 +218,7 @@ begin
   update public.bookings set status=p_to_status,updated_at=now(),version=version+1 where id=b.id;
   update public.jobs set status=p_to_status,updated_at=now(),version=version+1 where id=b.job_id;
   insert into public.job_status_events(booking_id,from_status,to_status,actor_user_id,reason_code,note) values(b.id,b.status,p_to_status,actor_id,'manual_transition',nullif(trim(p_note),''));
-  insert into public.idempotency_keys(principal_id,scope,key,request_hash,response_status,resource_id,expires_at) values(actor_id,'booking.transition',p_idempotency_key,encode(digest(concat_ws('|',b.id,b.status,p_to_status)::text,'sha256'),'hex'),200,b.id,now()+interval '24 hours');
+  insert into public.idempotency_keys(principal_id,scope,key,request_hash,response_status,resource_id,expires_at) values(actor_id,'booking.transition',p_idempotency_key,pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(concat_ws('|',b.id,b.status,p_to_status)::text,'UTF8')),'hex'),200,b.id,now()+interval '24 hours');
   if p_to_status='customer_confirmed' then update public.payment_holds set status='released',released_at=now(),version=version+1 where booking_id=b.id and status='held'; end if;
   return b.id;
 end;
