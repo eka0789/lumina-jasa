@@ -4,7 +4,7 @@ import {
   Camera, Check, ChevronRight, CircleDollarSign, Clock3, Hammer, HeartHandshake,
   Home, MapPin, MessageCircleMore, Search, ShieldCheck, Sparkles, Star, Wrench,
 } from "lucide-react"
-import { SiteHeader } from "@/components/site-header"
+
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,7 +29,7 @@ const steps = [
 export default function HomePage() {
   return (
     <div className="min-h-screen overflow-hidden">
-      <SiteHeader />
+
       <main id="konten-utama">
         <section className="relative isolate border-b">
           <div className="absolute inset-0 -z-20 bg-grid mask-fade" aria-hidden="true" />

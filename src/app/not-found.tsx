@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { FileQuestion } from "lucide-react"
-import { SiteHeader } from "@/components/site-header"
+
 
 export const metadata: Metadata = {
   title: "Halaman Tidak Ditemukan",
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <>
-      <SiteHeader />
+
       <main id="konten-utama" className="grid min-h-[calc(100vh-4.5rem)] place-items-center px-6 py-24">
         <div className="text-center max-w-md">
           <FileQuestion className="mx-auto mb-6 size-12 text-muted-foreground" aria-hidden="true" />

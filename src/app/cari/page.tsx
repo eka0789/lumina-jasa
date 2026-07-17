@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowLeft, BadgeCheck, Filter, MapPin, Search, Sparkles, Star } from "lucide-react"
-import { SiteHeader } from "@/components/site-header"
+
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -23,7 +23,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const rankedProviders = rankProviders(providers, query, params.area)
 
   return (
-    <div className="min-h-screen"><SiteHeader /><main id="konten-utama" className="container py-10 sm:py-14">
+    <div className="min-h-screen"><main id="konten-utama" className="container py-10 sm:py-14">
       <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground"><ArrowLeft className="size-4" />Beranda</Link>
       <div className="mt-7 max-w-3xl"><Badge><Sparkles className="size-3.5" />Katalog terverifikasi</Badge><h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Temukan ahli yang sesuai</h1><p className="mt-3 text-muted-foreground">Bandingkan layanan, area, reputasi, dan harga awal penyedia yang telah lolos verifikasi.</p></div>
       <form className="mt-8 flex max-w-4xl flex-col gap-3 rounded-lg border bg-card p-3 shadow-soft sm:flex-row" role="search">

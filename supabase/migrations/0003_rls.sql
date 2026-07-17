@@ -162,7 +162,13 @@ $$;
 
 grant execute on function private.is_job_participant(uuid) to authenticated;
 
-create policy jobs_participant_read on public.jobs for select to authenticated using (private.is_job_participant(id));
+create policy jobs_participant_read on public.jobs for select to authenticated using (
+  customer_id = (select auth.uid()) 
+  or private.is_business_member(business_id, null)
+  or exists (
+    select 1 from public.bookings b where b.job_id = id and private.is_provider_member(b.provider_id, null)
+  )
+);
 create policy jobs_customer_insert on public.jobs for insert to authenticated with check (
   customer_id = (select auth.uid()) and (business_id is null or private.is_business_member(business_id,array['owner','admin','requester']))
 );
@@ -170,9 +176,16 @@ create policy jobs_customer_update on public.jobs for update to authenticated
   using (customer_id = (select auth.uid()) and status in ('draft','requested'))
   with check (customer_id = (select auth.uid()));
 
-create policy bookings_participant_read on public.bookings for select to authenticated using (private.is_booking_participant(id));
+create policy bookings_participant_read on public.bookings for select to authenticated using (
+  customer_id = (select auth.uid()) 
+  or assigned_user_id = (select auth.uid())
+  or private.is_business_member(business_id, null)
+  or private.is_provider_member(provider_id, null)
+);
 create policy job_matches_customer_read on public.job_matches for select to authenticated
-  using (private.is_job_customer(job_id));
+  using (
+    job_id in (select id from public.jobs where customer_id = (select auth.uid()) or private.is_business_member(business_id, null))
+  );
 create policy status_events_participant_read on public.job_status_events for select to authenticated using (private.is_booking_participant(booking_id));
 create policy tracking_participant_read on public.tracking_points for select to authenticated using (private.is_booking_participant(booking_id));
 

@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import "@/app/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
@@ -23,7 +25,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <a href="#konten-utama" className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-md bg-primary px-4 py-3 font-semibold text-primary-foreground shadow-lg transition-transform focus:translate-y-0">
             Lewati ke konten utama
           </a>
+          <SiteHeader />
           {children}
+          <SiteFooter />
         </ThemeProvider>
       </body>
     </html>

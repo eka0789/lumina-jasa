@@ -34,8 +34,8 @@ revoke insert, update on public.bookings from authenticated;
 grant select on public.job_quotes to authenticated;
 
 create policy jobs_matched_provider_read on public.jobs for select to authenticated using (
-  exists (select 1 from public.job_matches m where m.job_id = jobs.id and private.is_provider_member(m.provider_id, null))
-);
+  id in (select job_id from public.job_matches m where private.is_provider_member(m.provider_id, null))
+);;
 create policy matches_provider_read on public.job_matches for select to authenticated using (
   private.is_provider_member(provider_id, null)
 );
