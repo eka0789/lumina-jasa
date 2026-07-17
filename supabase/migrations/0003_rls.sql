@@ -26,9 +26,20 @@ returns boolean language sql stable security definer set search_path = '' as $$
   );
 $$;
 
+create or replace function private.is_job_customer(target_job_id uuid)
+returns boolean language plpgsql stable security definer set search_path = '' as $$
+begin
+  return exists (
+    select 1 from public.jobs j
+    where j.id = target_job_id and (j.customer_id = (select auth.uid()) or private.is_business_member(j.business_id, null))
+  );
+end;
+$$;
+
 create or replace function private.is_booking_participant(target_booking_id uuid)
-returns boolean language sql stable security definer set search_path = '' as $$
-  select exists (
+returns boolean language plpgsql stable security definer set search_path = '' as $$
+begin
+  return exists (
     select 1 from public.bookings b
     where b.id = target_booking_id and (
       b.customer_id = (select auth.uid()) or b.assigned_user_id = (select auth.uid())
@@ -36,6 +47,7 @@ returns boolean language sql stable security definer set search_path = '' as $$
       or private.is_provider_member(b.provider_id, null)
     )
   );
+end;
 $$;
 
 create or replace function private.is_conversation_participant(target_conversation_id uuid)
@@ -48,8 +60,9 @@ returns boolean language sql stable security definer set search_path = '' as $$
 $$;
 
 create or replace function private.can_access_file(target_file_id uuid)
-returns boolean language sql stable security definer set search_path = '' as $$
-  select exists (
+returns boolean language plpgsql stable security definer set search_path = '' as $$
+begin
+  return exists (
     select 1 from public.message_attachments a
     join public.messages m on m.id = a.message_id
     join public.conversation_participants p on p.conversation_id = m.conversation_id
@@ -67,6 +80,7 @@ returns boolean language sql stable security definer set search_path = '' as $$
   ) or exists (
     select 1 from public.invoices i where i.file_id = target_file_id and private.is_booking_participant(i.booking_id)
   );
+end;
 $$;
 
 revoke all on function private.has_platform_role(text) from public;
@@ -133,10 +147,22 @@ create policy portfolios_public_read on public.provider_portfolios for select to
   status = 'approved' and exists (select 1 from public.providers p where p.id = provider_portfolios.provider_id and p.status = 'active' and p.verification_status = 'verified')
 );
 
-create policy jobs_participant_read on public.jobs for select to authenticated using (
-  customer_id = (select auth.uid()) or private.is_business_member(business_id,null)
-  or exists (select 1 from public.bookings b where b.job_id = jobs.id and private.is_provider_member(b.provider_id,null))
-);
+create or replace function private.is_job_participant(target_job_id uuid)
+returns boolean language plpgsql stable security definer set search_path = '' as $$
+begin
+  return exists (
+    select 1 from public.jobs j where j.id = target_job_id and (
+      j.customer_id = (select auth.uid()) or private.is_business_member(j.business_id,null)
+    )
+  ) or exists (
+    select 1 from public.bookings b where b.job_id = target_job_id and private.is_provider_member(b.provider_id,null)
+  );
+end;
+$$;
+
+grant execute on function private.is_job_participant(uuid) to authenticated;
+
+create policy jobs_participant_read on public.jobs for select to authenticated using (private.is_job_participant(id));
 create policy jobs_customer_insert on public.jobs for insert to authenticated with check (
   customer_id = (select auth.uid()) and (business_id is null or private.is_business_member(business_id,array['owner','admin','requester']))
 );
@@ -146,7 +172,7 @@ create policy jobs_customer_update on public.jobs for update to authenticated
 
 create policy bookings_participant_read on public.bookings for select to authenticated using (private.is_booking_participant(id));
 create policy job_matches_customer_read on public.job_matches for select to authenticated
-  using (exists (select 1 from public.jobs j where j.id = job_matches.job_id and (j.customer_id = (select auth.uid()) or private.is_business_member(j.business_id,null))));
+  using (private.is_job_customer(job_id));
 create policy status_events_participant_read on public.job_status_events for select to authenticated using (private.is_booking_participant(booking_id));
 create policy tracking_participant_read on public.tracking_points for select to authenticated using (private.is_booking_participant(booking_id));
 

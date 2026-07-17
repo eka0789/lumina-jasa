@@ -40,7 +40,7 @@ create policy matches_provider_read on public.job_matches for select to authenti
   private.is_provider_member(provider_id, null)
 );
 create policy quotes_customer_read on public.job_quotes for select to authenticated using (
-  exists (select 1 from public.jobs j where j.id = job_quotes.job_id and j.customer_id = (select auth.uid()))
+  private.is_job_customer(job_id)
 );
 create policy quotes_provider_read on public.job_quotes for select to authenticated using (
   private.is_provider_member(provider_id, null)
