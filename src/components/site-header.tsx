@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Menu, User, LogOut } from "lucide-react"
+import { Menu, LogOut } from "lucide-react"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { buttonVariants } from "@/components/ui/button"
