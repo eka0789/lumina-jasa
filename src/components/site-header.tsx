@@ -21,12 +21,21 @@ const links = [
 export async function SiteHeader() {
   const supabase = await createClient()
   let user = null;
+  let isAdmin = false;
   try {
     const { data } = await supabase.auth.getUser();
     user = data.user;
+    if (user) {
+      const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", user.id).is("revoked_at", null)
+      if (roles?.some(r => ["admin", "super_admin", "support", "compliance"].includes(r.role))) {
+        isAdmin = true
+      }
+    }
   } catch (error) {
     console.error("Failed to fetch user in SiteHeader:", error);
   }
+  
+  const dashboardHref = isAdmin ? "/admin" : "/beranda";
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/88 backdrop-blur-xl">
@@ -43,7 +52,7 @@ export async function SiteHeader() {
           <ThemeToggle />
           {user ? (
             <div className="hidden sm:flex items-center gap-2">
-              <Link href="/beranda" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-primary font-semibold")}>Dashboard</Link>
+              <Link href={dashboardHref} className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-primary font-semibold")}>Dashboard</Link>
               <form action="/auth/signout" method="POST">
                 <button type="submit" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "px-2")} aria-label="Keluar">
                   <LogOut className="size-4" />

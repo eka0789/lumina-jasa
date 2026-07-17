@@ -26,11 +26,20 @@ export function SignInForm({ nextPath = "/" }: { nextPath?: string }) {
       setServerError("Supabase belum dikonfigurasi pada environment ini.")
       return
     }
-    const { error } = await supabase.auth.signInWithPassword(values)
+    const { error, data } = await supabase.auth.signInWithPassword(values)
     if (error) {
       setServerError("Email atau kata sandi tidak cocok.")
       return
     }
+    
+    if (nextPath === "/" && data?.user) {
+      const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", data.user.id).is("revoked_at", null)
+      if (roles?.some(r => ["admin", "super_admin", "support", "compliance"].includes(r.role))) {
+        window.location.assign("/admin")
+        return
+      }
+    }
+    
     window.location.assign(nextPath !== "/" ? nextPath : "/beranda")
   }
 
