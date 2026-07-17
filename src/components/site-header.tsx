@@ -1,9 +1,10 @@
 import Link from "next/link"
-import { Menu } from "lucide-react"
+import { Menu, User, LogOut } from "lucide-react"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { createClient } from "@/lib/supabase/server"
 
 const links = [
   { href: "/#layanan", label: "Layanan" },
@@ -17,7 +18,10 @@ const links = [
   { href: "/mitra", label: "Jadi mitra" },
 ]
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/88 backdrop-blur-xl">
       <div className="container flex h-18 items-center justify-between gap-4 py-3">
@@ -31,8 +35,21 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-1.5">
           <ThemeToggle />
-          <Link href="/masuk" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex")}>Masuk</Link>
+          {user ? (
+            <div className="hidden sm:flex items-center gap-2">
+              <Link href="/pesanan" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-primary font-semibold")}>Dashboard</Link>
+              <form action="/auth/signout" method="POST">
+                <button type="submit" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "px-2")} aria-label="Keluar">
+                  <LogOut className="size-4" />
+                </button>
+              </form>
+            </div>
+          ) : (
+            <Link href="/masuk" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex")}>Masuk</Link>
+          )}
+          
           <Link href="/cari" className={cn(buttonVariants({ size: "sm" }), "hidden sm:inline-flex")}>Cari jasa</Link>
+          
           <details className="group relative md:hidden">
             <summary className="grid size-11 cursor-pointer list-none place-items-center rounded-md hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="Buka menu navigasi">
               <Menu className="size-5" aria-hidden="true" />
@@ -41,8 +58,14 @@ export function SiteHeader() {
               <nav aria-label="Navigasi seluler" className="grid">
                 {links.map((link) => <Link key={link.href} href={link.href} className="rounded-md px-4 py-3 text-sm font-medium hover:bg-accent">{link.label}</Link>)}
                 <div className="mt-2 grid grid-cols-2 gap-2 border-t pt-2">
-                  <Link href="/masuk" className={buttonVariants({ variant: "outline", size: "sm" })}>Masuk</Link>
-                  <Link href="/cari" className={buttonVariants({ size: "sm" })}>Cari jasa</Link>
+                  {user ? (
+                    <form action="/auth/signout" method="POST" className="col-span-2">
+                      <button type="submit" className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full")}>Keluar</button>
+                    </form>
+                  ) : (
+                    <Link href="/masuk" className={buttonVariants({ variant: "outline", size: "sm" })}>Masuk</Link>
+                  )}
+                  <Link href="/cari" className={buttonVariants({ size: "sm", className: "col-span-2 mt-2" })}>Cari jasa</Link>
                 </div>
               </nav>
             </div>

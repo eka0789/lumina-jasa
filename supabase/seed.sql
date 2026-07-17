@@ -80,3 +80,16 @@ VALUES (
   'scheduled',
   'requested'
 );
+
+-- Dummy Job Match (link job to provider so it appears in Provider Dashboard)
+INSERT INTO public.job_matches (job_id, provider_id, provider_service_id, rank, score, score_components, status, model_version)
+VALUES (
+  '00000000-0000-0000-0000-000000000005',
+  '00000000-0000-0000-0000-000000000003',
+  '00000000-0000-0000-0000-000000000004',
+  1,
+  0.95,
+  '{"distance":0.9,"rating":1.0,"availability":0.95}'::jsonb,
+  'invited',
+  'v1.0.0'
+);
