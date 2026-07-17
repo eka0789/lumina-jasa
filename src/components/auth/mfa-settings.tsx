@@ -44,9 +44,12 @@ export function MfaSettings({ nextPath = "/" }: { nextPath?: string }) {
     if (!supabase) return setBusy(false)
     const { data, error: enrollError } = await supabase.auth.mfa.enroll({
       factorType: "totp",
-      friendlyName: "Lumina Jasa Authenticator",
+      friendlyName: `Lumina Jasa - ${new Date().getTime()}`,
     })
-    if (enrollError) setError("Authenticator belum dapat didaftarkan. Coba lagi.")
+    if (enrollError) {
+      console.error("MFA Enroll Error:", enrollError)
+      setError(`Authenticator belum dapat didaftarkan. Coba lagi. (${enrollError.message})`)
+    }
     else setEnrollment({ id: data.id, qrCode: data.totp.qr_code, secret: data.totp.secret })
     setBusy(false)
   }
@@ -102,7 +105,7 @@ export function MfaSettings({ nextPath = "/" }: { nextPath?: string }) {
       {enrollment ? (
         <section aria-labelledby="enroll-title" className="space-y-4">
           <div><h2 id="enroll-title" className="font-semibold">Pindai kode QR</h2><p className="mt-1 text-sm text-muted-foreground">Gunakan aplikasi authenticator, lalu masukkan kode yang muncul.</p></div>
-          <div className="flex justify-center rounded-lg border bg-white p-4"><Image src={enrollment.qrCode} alt="Kode QR untuk mengaktifkan MFA" width={192} height={192} unoptimized /></div>
+          <div className="flex justify-center rounded-lg border bg-white p-4"><img src={enrollment.qrCode} alt="Kode QR untuk mengaktifkan MFA" width={192} height={192} className="size-48" /></div>
           <details className="text-sm"><summary className="cursor-pointer font-semibold">Tidak dapat memindai?</summary><p className="mt-2 break-all rounded-md bg-muted p-3 font-mono text-xs">{enrollment.secret}</p></details>
           <div className="space-y-2"><label htmlFor="totp-code" className="text-sm font-semibold">Kode verifikasi 6 digit</label><Input id="totp-code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, ""))} /></div>
           <Button className="w-full" onClick={verify} disabled={busy}>{busy && <LoaderCircle className="size-4 animate-spin motion-reduce:animate-none" />}Aktifkan MFA</Button>

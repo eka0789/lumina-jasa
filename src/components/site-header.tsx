@@ -37,7 +37,7 @@ export async function SiteHeader() {
           <ThemeToggle />
           {user ? (
             <div className="hidden sm:flex items-center gap-2">
-              <Link href="/pesanan" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-primary font-semibold")}>Dashboard</Link>
+              <Link href="/beranda" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-primary font-semibold")}>Dashboard</Link>
               <form action="/auth/signout" method="POST">
                 <button type="submit" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "px-2")} aria-label="Keluar">
                   <LogOut className="size-4" />

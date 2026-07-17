@@ -31,7 +31,7 @@ export function SignInForm({ nextPath = "/" }: { nextPath?: string }) {
       setServerError("Email atau kata sandi tidak cocok.")
       return
     }
-    window.location.assign(nextPath !== "/" ? nextPath : "/pesanan")
+    window.location.assign(nextPath !== "/" ? nextPath : "/beranda")
   }
 
   async function signInWithGoogle() {
