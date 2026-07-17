@@ -20,7 +20,13 @@ const links = [
 
 export async function SiteHeader() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch (error) {
+    console.error("Failed to fetch user in SiteHeader:", error);
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/88 backdrop-blur-xl">
