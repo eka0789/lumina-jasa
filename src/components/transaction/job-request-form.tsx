@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input"
 import type { CatalogServiceOption } from "@/lib/catalog"
 import { createClient } from "@/lib/supabase/client"
 
-const schema = z.object({ serviceId: z.string().uuid(), title: z.string().min(5), description: z.string().min(20), start: z.string().min(1), end: z.string().min(1), budgetMin: z.coerce.number().int().min(0), budgetMax: z.coerce.number().int().positive() }).refine((value) => value.budgetMax >= value.budgetMin, { path: ["budgetMax"], message: "Batas maksimal harus lebih besar." }).refine((value) => new Date(value.end) > new Date(value.start), { path: ["end"], message: "Waktu selesai harus setelah mulai." })
+const schema = z.object({ serviceId: z.string().regex(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/, "Pilih jenis layanan."), title: z.string().min(5), description: z.string().min(20), start: z.string().min(1), end: z.string().min(1), budgetMin: z.coerce.number().int().min(0), budgetMax: z.coerce.number().int().positive() }).refine((value) => value.budgetMax >= value.budgetMin, { path: ["budgetMax"], message: "Batas maksimal harus lebih besar." }).refine((value) => new Date(value.end) > new Date(value.start), { path: ["end"], message: "Waktu selesai harus setelah mulai." })
 type InputValues = z.input<typeof schema>
 type Values = z.output<typeof schema>
 

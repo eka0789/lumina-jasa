@@ -16,7 +16,7 @@ const schema = z.object({
   displayName: z.string().min(3, "Nama penyedia minimal 3 karakter.").max(80),
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Gunakan huruf kecil, angka, dan tanda hubung."),
   bio: z.string().min(30, "Ceritakan keahlian Anda dalam minimal 30 karakter.").max(600),
-  verificationKind: z.enum(["kyc", "kyb"]), serviceId: z.string().uuid(),
+  verificationKind: z.enum(["kyc", "kyb"]), serviceId: z.string().regex(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/, "Pilih kategori layanan yang valid."),
   listingTitle: z.string().min(5, "Judul layanan minimal 5 karakter.").max(100),
   pricingType: z.enum(["fixed", "hourly", "from", "quote"]),
   basePrice: z.coerce.number().int().min(0).max(1_000_000_000),
