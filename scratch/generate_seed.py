@@ -40,9 +40,11 @@ out.append('-- USER ROLES (20 roles)')
 out.append('-- =============================================================================')
 out.append('INSERT INTO public.user_roles (user_id, role) VALUES')
 roles = []
-for i in range(1, 21):
+for i in range(1, 19):
     u_id = gen_uuid('0000', i)
     roles.append(f"  ('{u_id}', 'customer')")
+roles.append(f"  ('{gen_uuid('0000', 19)}', 'admin')")
+roles.append(f"  ('{gen_uuid('0000', 20)}', 'super_admin')")
 out.append(',\n'.join(roles))
 out.append('ON CONFLICT DO NOTHING;\n')
 
