@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import Link from "next/link"
 import { AlertTriangle } from "lucide-react"
 
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
@@ -25,12 +26,12 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
               >
                 Coba lagi
               </button>
-              <a
+              <Link
                 href="/"
                 className="rounded-md border border-border px-5 py-2.5 text-sm font-semibold hover:bg-accent"
               >
                 Kembali ke beranda
-              </a>
+              </Link>
             </div>
             {error.digest && (
               <p className="mt-6 text-xs text-muted-foreground">ID error: {error.digest}</p>
