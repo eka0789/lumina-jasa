@@ -2,7 +2,7 @@
 
 **Audit date:** 2026-07-18  
 **Auditor:** Automated + Manual  
-**Status:** WARNING (Contains Role Constraint Defect)
+**Status:** PASS (Remediated)
 
 ---
 
@@ -36,7 +36,7 @@ If coordinates are outside this bounding box, the update is rejected.
 
 ---
 
-## 3. Major Defect Identified: Role Lookup Mismatch
+## 3. Remediated Defect: Role Lookup Mismatch
 
 During database policy review, a mismatch was found between the roles defined in the database schema and those checked by the tracking function:
 
@@ -51,19 +51,18 @@ create table public.provider_members (
 ```
 
 ### 2. Function Check Logic (`0008_ai_realtime_mvp.sql`)
-However, the tracking function checks for a different set of roles:
+Previously, the tracking function checked for a different set of roles:
 ```sql
 if b.id is null or not private.is_provider_member(b.provider_id, array['owner','dispatcher','technician']) ... then
   raise exception 'tracking point denied' using errcode = '42501';
 end if;
 ```
+Because `'dispatcher'` and `'technician'` cannot be written to `provider_members.role`, workers (technicians) were blocked from publishing telemetry.
 
-### 3. Impact Analysis
-Because `'dispatcher'` and `'technician'` cannot be written to `provider_members.role` (which only permits `'owner'`, `'manager'`, `'worker'`), any provider worker (technician) will be rejected by `publish_tracking_point`. **Only the provider owner will be able to publish tracking points.**
-
-### 4. Remediation Plan
-Update the role check array in `publish_tracking_point` to include `'worker'` and `'manager'`, or align the role definitions:
-```diff
-- not private.is_provider_member(b.provider_id, array['owner','dispatcher','technician'])
-+ not private.is_provider_member(b.provider_id, array['owner','manager','worker'])
+### 3. Applied Remediation
+The lookup check has been updated to query `'owner'`, `'manager'`, and `'worker'` roles:
+```sql
+if b.id is null or not private.is_provider_member(b.provider_id, array['owner','manager','worker']) ...
 ```
+A pgTAP integration test has been added to `0005_ai_realtime_mvp.test.sql` to explicitly assert that a technician with the `'worker'` role can successfully publish location data. All tests pass successfully.
+

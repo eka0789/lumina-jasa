@@ -1,14 +1,17 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(15);
+select plan(16);
 
 insert into auth.users(id,email,encrypted_password,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,aud,role) values
 ('80000000-0000-0000-0000-000000000001','ai-customer@example.test','',now(),'{}','{"full_name":"AI Customer"}','authenticated','authenticated'),
 ('80000000-0000-0000-0000-000000000002','ai-provider@example.test','',now(),'{}','{"full_name":"AI Provider"}','authenticated','authenticated'),
-('80000000-0000-0000-0000-000000000003','ai-moderator@example.test','',now(),'{}','{"full_name":"AI Moderator"}','authenticated','authenticated');
+('80000000-0000-0000-0000-000000000003','ai-moderator@example.test','',now(),'{}','{"full_name":"AI Moderator"}','authenticated','authenticated'),
+('80000000-0000-0000-0000-000000000004','ai-worker@example.test','',now(),'{}','{"full_name":"AI Worker"}','authenticated','authenticated');
 insert into public.user_roles(user_id,role) values('80000000-0000-0000-0000-000000000003','support');
 insert into public.providers(id,owner_user_id,display_name,slug,status,verification_status) values('81000000-0000-0000-0000-000000000001','80000000-0000-0000-0000-000000000002','AI Teknik','ai-teknik','active','verified');
-insert into public.provider_members(provider_id,user_id,role,status) values('81000000-0000-0000-0000-000000000001','80000000-0000-0000-0000-000000000002','owner','active');
+insert into public.provider_members(provider_id,user_id,role,status) values
+('81000000-0000-0000-0000-000000000001','80000000-0000-0000-0000-000000000002','owner','active'),
+('81000000-0000-0000-0000-000000000001','80000000-0000-0000-0000-000000000004','worker','active');
 insert into public.provider_services(id,provider_id,service_id,title,pricing_type,base_price,status) values('82000000-0000-0000-0000-000000000001','81000000-0000-0000-0000-000000000001','52000000-0000-0000-0000-000000000001','AI Service','fixed',300000,'active');
 insert into public.provider_availability(provider_id,weekday,starts_at,ends_at,capacity) select '81000000-0000-0000-0000-000000000001',day,'00:00','23:59',1 from generate_series(0,6) day;
 create temporary table ai_ids(kind text primary key,id uuid);
@@ -33,7 +36,9 @@ select is((select count(*) from public.moderation_cases where subject_id=(select
 select throws_ok($$select public.publish_tracking_point((select id from ai_ids where kind='booking'),-6.2,106.8,25,now())$$,'42501','tracking point denied','customer cannot publish provider tracking');
 select set_config('request.jwt.claim.sub','80000000-0000-0000-0000-000000000002',true);select public.transition_booking((select id from ai_ids where kind='booking'),'accepted','','ai-t1');select public.transition_booking((select id from ai_ids where kind='booking'),'en_route','','ai-t2');
 select lives_ok($$select public.publish_tracking_point((select id from ai_ids where kind='booking'),-6.2,106.8,25,now())$$,'provider publishes tracking only in active arrival state');
-select is((select count(*) from public.tracking_points where booking_id=(select id from ai_ids where kind='booking')),1::bigint,'tracking point is persisted');
+select set_config('request.jwt.claim.sub','80000000-0000-0000-0000-000000000004',true);
+select lives_ok($$select public.publish_tracking_point((select id from ai_ids where kind='booking'),-6.2,106.8,25,now())$$,'worker member publishes tracking');
+select is((select count(*) from public.tracking_points where booking_id=(select id from ai_ids where kind='booking')),2::bigint,'tracking points are persisted');
 
 select set_config('request.jwt.claim.sub','80000000-0000-0000-0000-000000000003',true);select set_config('request.jwt.claims','{"sub":"80000000-0000-0000-0000-000000000003","role":"authenticated","aal":"aal1"}',true);
 select throws_ok($$select public.resolve_moderation_case((select id from public.moderation_cases where subject_id=(select id from ai_ids where kind='flagged_message')),'allowed','Konteks telah diperiksa aman.','mod-aal1')$$,'42501','moderator AAL2 required','moderation requires AAL2');

@@ -993,7 +993,7 @@ returns bigint language plpgsql security definer set search_path='' as $$
 declare actor_id uuid:=(select auth.uid());point_id bigint;b public.bookings;
 begin
  select * into b from public.bookings where id=p_booking_id and status in('en_route','in_progress');
- if b.id is null or not private.is_provider_member(b.provider_id,array['owner','dispatcher','technician']) or p_latitude not between -11.5 and 6.5 or p_longitude not between 94 and 142 or p_accuracy<0 or p_accuracy>5000 or p_captured_at>now()+interval '2 minutes' then raise exception 'tracking point denied' using errcode='42501';end if;
+ if b.id is null or not private.is_provider_member(b.provider_id,array['owner','manager','worker']) or p_latitude not between -11.5 and 6.5 or p_longitude not between 94 and 142 or p_accuracy<0 or p_accuracy>5000 or p_captured_at>now()+interval '2 minutes' then raise exception 'tracking point denied' using errcode='42501';end if;
  insert into public.tracking_points(booking_id,provider_user_id,location,accuracy_meters,captured_at) values(b.id,actor_id,public.st_setsrid(public.st_makepoint(p_longitude,p_latitude),4326)::public.geography,p_accuracy,p_captured_at) returning id into point_id;
  return point_id;
 end;$$;
