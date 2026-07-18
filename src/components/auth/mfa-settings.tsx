@@ -1,6 +1,4 @@
 "use client"
-
-import Image from "next/image"
 import { useCallback, useEffect, useState } from "react"
 import { AlertCircle, CheckCircle2, KeyRound, LoaderCircle, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -47,7 +45,6 @@ export function MfaSettings({ nextPath = "/" }: { nextPath?: string }) {
       friendlyName: `Lumina Jasa - ${new Date().getTime()}`,
     })
     if (enrollError) {
-      console.error("MFA Enroll Error:", enrollError)
       setError(`Authenticator belum dapat didaftarkan. Coba lagi. (${enrollError.message})`)
     }
     else setEnrollment({ id: data.id, qrCode: data.totp.qr_code, secret: data.totp.secret })
@@ -105,6 +102,7 @@ export function MfaSettings({ nextPath = "/" }: { nextPath?: string }) {
       {enrollment ? (
         <section aria-labelledby="enroll-title" className="space-y-4">
           <div><h2 id="enroll-title" className="font-semibold">Pindai kode QR</h2><p className="mt-1 text-sm text-muted-foreground">Gunakan aplikasi authenticator, lalu masukkan kode yang muncul.</p></div>
+          {/* eslint-disable-next-line @next/next/no-img-element -- QR code is a data URI from Supabase Auth; next/image is not suitable */}
           <div className="flex justify-center rounded-lg border bg-white p-4"><img src={enrollment.qrCode} alt="Kode QR untuk mengaktifkan MFA" width={192} height={192} className="size-48" /></div>
           <details className="text-sm"><summary className="cursor-pointer font-semibold">Tidak dapat memindai?</summary><p className="mt-2 break-all rounded-md bg-muted p-3 font-mono text-xs">{enrollment.secret}</p></details>
           <div className="space-y-2"><label htmlFor="totp-code" className="text-sm font-semibold">Kode verifikasi 6 digit</label><Input id="totp-code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, ""))} /></div>
