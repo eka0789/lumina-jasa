@@ -6,11 +6,11 @@ SELECT set_config('app.environment', 'development', false);
 -- AUTH USERS
 -- =============================================================================
 INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, recovery_sent_at, last_sign_in_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at, confirmation_token, email_change, email_change_token_new, recovery_token) VALUES
-  ('00000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user1@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 1"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000000','authenticated','authenticated','customer@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Budi Santoso"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000002','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user2@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 2"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000003','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user3@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 3"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000004','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user4@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 4"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000005','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user5@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 5"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000003','00000000-0000-0000-0000-000000000000','authenticated','authenticated','support@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Siti Rahayu"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000004','00000000-0000-0000-0000-000000000000','authenticated','authenticated','finance@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Reza Pratama"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000005','00000000-0000-0000-0000-000000000000','authenticated','authenticated','compliance@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Dewi Kusuma"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000006','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user6@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 6"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000007','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user7@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 7"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000008','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user8@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 8"}', now(),now(),'','','',''),
@@ -23,12 +23,12 @@ INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, e
   ('00000000-0000-0000-0000-000000000015','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user15@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 15"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000016','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user16@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 16"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000017','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user17@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 17"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000018','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user18@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 18"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000019','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user19@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 19"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000020','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user20@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 20"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000021','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user21@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 21"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000022','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user22@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 22"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000023','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user23@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 23"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000018','00000000-0000-0000-0000-000000000000','authenticated','authenticated','aimod@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Rian Hidayat"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000019','00000000-0000-0000-0000-000000000000','authenticated','authenticated','admin@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Hendra Wijaya"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000020','00000000-0000-0000-0000-000000000000','authenticated','authenticated','superadmin@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Surya Kencana"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000021','00000000-0000-0000-0000-000000000000','authenticated','authenticated','provider@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Joko Susilo"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000022','00000000-0000-0000-0000-000000000000','authenticated','authenticated','manager@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Eko Prasetyo"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000023','00000000-0000-0000-0000-000000000000','authenticated','authenticated','worker@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Bambang"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000024','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user24@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 24"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000025','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user25@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 25"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000026','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user26@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 26"}', now(),now(),'','','',''),
@@ -46,8 +46,8 @@ INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, e
   ('00000000-0000-0000-0000-000000000038','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user38@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 38"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000039','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user39@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 39"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000040','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user40@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 40"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000041','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user41@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 41"}', now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000042','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user42@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 42"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000041','00000000-0000-0000-0000-000000000000','authenticated','authenticated','bizowner@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Anto Wijaya"}', now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000042','00000000-0000-0000-0000-000000000000','authenticated','authenticated','bizrequester@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"Siska"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000043','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user43@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 43"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000044','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user44@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 44"}', now(),now(),'','','',''),
   ('00000000-0000-0000-0000-000000000045','00000000-0000-0000-0000-000000000000','authenticated','authenticated','user45@example.com', crypt('password123',gen_salt('bf')), now(),now(),now(),'{"provider":"email","providers":["email"]}','{"full_name":"User 45"}', now(),now(),'','','',''),
@@ -80,9 +80,9 @@ SELECT gen_random_uuid(), id::text, id, format('{"sub":"%s","email":"%s"}', id, 
 INSERT INTO public.user_roles (user_id, role) VALUES
   ('00000000-0000-0000-0000-000000000001', 'customer'),
   ('00000000-0000-0000-0000-000000000002', 'customer'),
-  ('00000000-0000-0000-0000-000000000003', 'customer'),
-  ('00000000-0000-0000-0000-000000000004', 'customer'),
-  ('00000000-0000-0000-0000-000000000005', 'customer'),
+  ('00000000-0000-0000-0000-000000000003', 'support'),
+  ('00000000-0000-0000-0000-000000000004', 'finance'),
+  ('00000000-0000-0000-0000-000000000005', 'compliance'),
   ('00000000-0000-0000-0000-000000000006', 'customer'),
   ('00000000-0000-0000-0000-000000000007', 'customer'),
   ('00000000-0000-0000-0000-000000000008', 'customer'),
@@ -95,7 +95,7 @@ INSERT INTO public.user_roles (user_id, role) VALUES
   ('00000000-0000-0000-0000-000000000015', 'customer'),
   ('00000000-0000-0000-0000-000000000016', 'customer'),
   ('00000000-0000-0000-0000-000000000017', 'customer'),
-  ('00000000-0000-0000-0000-000000000018', 'customer'),
+  ('00000000-0000-0000-0000-000000000018', 'ai_moderator'),
   ('00000000-0000-0000-0000-000000000019', 'admin'),
   ('00000000-0000-0000-0000-000000000020', 'super_admin')
 ON CONFLICT DO NOTHING;
@@ -104,7 +104,7 @@ ON CONFLICT DO NOTHING;
 -- PROVIDERS (20)
 -- =============================================================================
 INSERT INTO public.providers (id, owner_user_id, display_name, slug, bio, status, verification_status, rating_avg, rating_count, completed_jobs, response_rate, created_at, updated_at) VALUES
-  ('aa000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000021', 'Provider 1', 'provider-1', 'Bio provider 1', 'active', 'verified', 4.5, 10, 50, 95.0, now(), now()),
+  ('aa000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000021', 'Sejuk AC Services', 'sejuk-ac-services', 'Layanan perawatan AC terpercaya.', 'active', 'verified', 4.5, 10, 50, 95.0, now(), now()),
   ('aa000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000022', 'Provider 2', 'provider-2', 'Bio provider 2', 'active', 'verified', 4.5, 10, 50, 95.0, now(), now()),
   ('aa000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000023', 'Provider 3', 'provider-3', 'Bio provider 3', 'active', 'verified', 4.5, 10, 50, 95.0, now(), now()),
   ('aa000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000024', 'Provider 4', 'provider-4', 'Bio provider 4', 'active', 'verified', 4.5, 10, 50, 95.0, now(), now()),
@@ -131,8 +131,8 @@ ON CONFLICT DO NOTHING;
 -- =============================================================================
 INSERT INTO public.provider_members (provider_id, user_id, role, status) VALUES
   ('aa000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000021', 'owner', 'active'),
-  ('aa000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000022', 'owner', 'active'),
-  ('aa000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000023', 'owner', 'active'),
+  ('aa000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000022', 'manager', 'active'),
+  ('aa000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000023', 'worker', 'active'),
   ('aa000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000024', 'owner', 'active'),
   ('aa000000-0000-0000-0000-000000000005', '00000000-0000-0000-0000-000000000025', 'owner', 'active'),
   ('aa000000-0000-0000-0000-000000000006', '00000000-0000-0000-0000-000000000026', 'owner', 'active'),
@@ -182,7 +182,7 @@ ON CONFLICT DO NOTHING;
 -- BUSINESSES (20)
 -- =============================================================================
 INSERT INTO public.businesses (id, legal_name, display_name, tax_id, verification_status, billing_email, created_by, created_at, updated_at) VALUES
-  ('cc000000-0000-0000-0000-000000000001', 'PT Bisnis 1', 'Bisnis 1', '01.000.000.0-000.001', 'verified', 'billing1@bisnis.com', '00000000-0000-0000-0000-000000000041', now(), now()),
+  ('cc000000-0000-0000-0000-000000000001', 'PT Maju Bersama Indonesia', 'PT Maju Bersama Indonesia', '01.000.000.0-000.001', 'verified', 'billing@majubersama.com', '00000000-0000-0000-0000-000000000041', now(), now()),
   ('cc000000-0000-0000-0000-000000000002', 'PT Bisnis 2', 'Bisnis 2', '01.000.000.0-000.002', 'verified', 'billing2@bisnis.com', '00000000-0000-0000-0000-000000000042', now(), now()),
   ('cc000000-0000-0000-0000-000000000003', 'PT Bisnis 3', 'Bisnis 3', '01.000.000.0-000.003', 'verified', 'billing3@bisnis.com', '00000000-0000-0000-0000-000000000043', now(), now()),
   ('cc000000-0000-0000-0000-000000000004', 'PT Bisnis 4', 'Bisnis 4', '01.000.000.0-000.004', 'verified', 'billing4@bisnis.com', '00000000-0000-0000-0000-000000000044', now(), now()),
@@ -209,7 +209,7 @@ ON CONFLICT DO NOTHING;
 -- =============================================================================
 INSERT INTO public.business_members (business_id, user_id, role, status) VALUES
   ('cc000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000041', 'owner', 'active'),
-  ('cc000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000042', 'owner', 'active'),
+  ('cc000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000042', 'requester', 'active'),
   ('cc000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000043', 'owner', 'active'),
   ('cc000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000044', 'owner', 'active'),
   ('cc000000-0000-0000-0000-000000000005', '00000000-0000-0000-0000-000000000045', 'owner', 'active'),
