@@ -1,0 +1,16 @@
+# Normalisasi line-ending: paksa LF di repo untuk semua file teks.
+# Menghilangkan noise CRLF<->LF saat bekerja di Windows.
+* text=auto eol=lf
+
+# File biner: jangan pernah diubah line-ending-nya.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.pdf binary
